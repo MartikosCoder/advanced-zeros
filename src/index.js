@@ -1,23 +1,26 @@
 module.exports = function getZerosCount(number, base) {
-    if(base <= number){
-        let counter = 0;
+    let counter = Number.MAX_VALUE;
 
-        for(let i = 5; parseInt(number / i) > 0; i *= 5){
-            counter += parseInt(number / i);
+    for(let i = 2; i <= base; i++){
+        if(base % i === 0){
+            let cnt_base1 = 0;
+
+            while (base % i === 0){
+                cnt_base1++;
+                base = parseInt(base / i);
+            }
+
+            let cnt_base2 = 0;
+            let t = number;
+
+            while (t / i > 0){
+                cnt_base2 += parseInt(t / i);
+                t = parseInt(t / i);
+            }
+
+            counter = Math.min(counter, cnt_base2 / cnt_base1);
         }
-
-        return counter;
-    } else {
-
     }
 
-    let based_num = 0;
-    let str = '';
-
-    while(number > 0){
-        str += number % base;
-        number = parseInt(number / base);
-    }
-
-    based_num = parseInt(str.split('').reverse().join(''));
+    return parseInt(counter);
 }
